@@ -1,14 +1,14 @@
 package com.javalang.bokstore.order_service.web;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.notNullValue;
+
 import com.javalang.bokstore.order_service.BaseIntegrationTest;
 import com.javalang.bokstore.order_service.testdata.TestDataFactory;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.notNullValue;
 
 class OrderControllerTest extends BaseIntegrationTest {
 
@@ -50,14 +50,13 @@ class OrderControllerTest extends BaseIntegrationTest {
                     .then()
                     .statusCode(HttpStatus.CREATED.value())
                     .body("orderNumber", notNullValue());
-
         }
 
         @Test
         void shouldReturnBadRequestForInvalidRequestData() {
-            var payload = TestDataFactory.createOrderRequestWithInvalidCustomer();
+            var data = TestDataFactory.createOrderRequestWithInvalidCustomer();
             given().contentType(ContentType.JSON)
-                    .body(payload)
+                    .body(data)
                     .when()
                     .post("/api/order")
                     .then()

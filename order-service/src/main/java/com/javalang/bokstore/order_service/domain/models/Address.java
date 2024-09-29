@@ -1,4 +1,5 @@
 package com.javalang.bokstore.order_service.domain.models;
+
 import jakarta.validation.constraints.NotBlank;
 
 public record Address(

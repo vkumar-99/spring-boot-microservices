@@ -2,16 +2,15 @@ package com.javalang.bokstore.order_service.web.exception;
 
 import com.javalang.bokstore.order_service.domain.OrderNotFoundException;
 import jakarta.annotation.Nullable;
+import java.net.URI;
+import java.time.Instant;
+import java.util.List;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.net.URI;
-import java.time.Instant;
-import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -45,9 +44,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    @Nullable
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        List<String> errors = ex.getBindingResult().getAllErrors().stream().map(err -> err.getDefaultMessage()).toList();
+    @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<String> errors = ex.getBindingResult().getAllErrors().stream()
+                .map(err -> err.getDefaultMessage())
+                .toList();
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid request");
         problemDetail.setTitle("Bad request");
         problemDetail.setType(BAD_REQUEST_TYPE);

@@ -2,14 +2,13 @@ package com.javalang.bokstore.order_service.testdata;
 
 import static org.instancio.Select.field;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
-
 import com.javalang.bokstore.order_service.domain.models.Address;
 import com.javalang.bokstore.order_service.domain.models.Customer;
 import com.javalang.bokstore.order_service.domain.models.OrderItem;
 import com.javalang.bokstore.order_service.domain.models.OrderRequest;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 import org.instancio.Instancio;
 
 public class TestDataFactory {
@@ -48,7 +47,7 @@ public class TestDataFactory {
         return Instancio.of(OrderRequest.class)
                 .generate(field(Customer::email), gen -> gen.text().pattern("#c#c#c#c#d#d@mail.com"))
                 .generate(field(Address::country), gen -> gen.oneOf(VALID_COUNTIES))
-                .set(field(OrderRequest ::items), Set.of())
+                .set(field(OrderRequest::items), Set.of())
                 .create();
     }
 }
