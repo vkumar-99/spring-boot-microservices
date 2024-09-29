@@ -1,6 +1,6 @@
 package com.javalang.bokstore.order_service.domain;
 
-public class OrderNotFoundException extends RuntimeException{
+public class OrderNotFoundException extends RuntimeException {
 
     public OrderNotFoundException(String message) {
         super(message);

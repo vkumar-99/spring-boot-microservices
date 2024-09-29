@@ -2,10 +2,8 @@ package com.javalang.bokstore.order_service;
 
 import org.junit.jupiter.api.Test;
 
-class OrderServiceApplicationTests extends BaseIntegrationTest{
+class OrderServiceApplicationTests extends BaseIntegrationTest {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {}
 }

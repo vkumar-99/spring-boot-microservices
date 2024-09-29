@@ -3,7 +3,6 @@ package com.javalang.bokstore.order_service.domain;
 import com.javalang.bokstore.order_service.domain.models.OrderItem;
 import com.javalang.bokstore.order_service.domain.models.OrderRequest;
 import com.javalang.bokstore.order_service.domain.models.OrderStatus;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;

@@ -1,10 +1,19 @@
 package com.javalang.bokstore.order_service.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static com.javalang.bokstore.order_service.testdata.TestDataFactory.*;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javalang.bokstore.order_service.domain.OrderService;
 import com.javalang.bokstore.order_service.domain.SecurityService;
 import com.javalang.bokstore.order_service.domain.models.OrderRequest;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,22 +24,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.stream.Stream;
-
-import static com.javalang.bokstore.order_service.testdata.TestDataFactory.*;
-import static org.junit.jupiter.api.Named.named;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @WebMvcTest(OrderController.class)
 class OrderControllerUnitTest {
 
     @MockBean
     private OrderService orderService;
+
     @MockBean
     private SecurityService securityService;
 
@@ -48,12 +47,11 @@ class OrderControllerUnitTest {
     @ParameterizedTest(name = "[{index}]-{0}")
     @MethodSource("createOrderRequestProvider")
     void shouldReturnBadRequestWhenOrderPayloadisInvalid(OrderRequest orderRequest) throws Exception {
-        given(orderService.createOrder(eq("User"), any(OrderRequest.class)))
-                .willReturn(null);
+        given(orderService.createOrder(eq("User"), any(OrderRequest.class))).willReturn(null);
 
         mockMvc.perform(post("/api/order")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(orderRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(orderRequest)))
                 .andExpect(status().isBadRequest());
     }
 
