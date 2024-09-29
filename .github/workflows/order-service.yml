@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./order-service
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/bookstore-order-service
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
