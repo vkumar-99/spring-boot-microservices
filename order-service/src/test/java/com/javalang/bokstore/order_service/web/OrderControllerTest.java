@@ -55,9 +55,9 @@ class OrderControllerTest extends BaseIntegrationTest {
 
         @Test
         void shouldReturnBadRequestForInvalidRequestData() {
-            var payload = TestDataFactory.createOrderRequestWithInvalidCustomer();
+            var data = TestDataFactory.createOrderRequestWithInvalidCustomer();
             given().contentType(ContentType.JSON)
-                    .body(payload)
+                    .body(data)
                     .when()
                     .post("/api/order")
                     .then()
