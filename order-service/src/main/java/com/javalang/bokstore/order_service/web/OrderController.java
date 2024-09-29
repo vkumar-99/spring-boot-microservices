@@ -27,7 +27,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     OrderResponse createOrder(@Valid @RequestBody OrderRequest request) {
         String userName = securityService.getLoginUsername();
-        logger.info("Logged-in username {}", userName);
+        logger.info("LoggedIn username {}", userName);
         return orderService.createOrder(userName, request);
     }
 }
