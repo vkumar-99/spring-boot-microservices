@@ -26,7 +26,7 @@ public abstract class BaseIntegrationTest {
     @BeforeAll
     static void beforeAll() {
         wireMockContainer.start();
-        configureFor(wireMockContainer.getBaseUrl(), wireMockContainer.getPort());
+        configureFor(wireMockContainer.getHost(), wireMockContainer.getPort());
     }
 
     @BeforeEach

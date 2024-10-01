@@ -52,3 +52,5 @@ order:
   delivered-order-queue: delivered-order
   cancelled-order-queue: cancelled-order
   error-order-queue: error-order
+  publish-order-events-job-cron: "*/5 * * * * *"
+  new-order-job-cron: "*/10 * * * * *"
