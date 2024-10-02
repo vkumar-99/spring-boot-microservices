@@ -50,7 +50,7 @@ class OrderControllerUnitTest {
         given(orderService.createOrder(eq("User"), any(CreateOrderRequest.class)))
                 .willReturn(null);
 
-        mockMvc.perform(post("/api/order")
+        mockMvc.perform(post("/api/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createOrderRequest)))
                 .andExpect(status().isBadRequest());
