@@ -4,11 +4,8 @@ import com.javalang.bookstore.catalog.domain.PagedResult;
 import com.javalang.bookstore.catalog.domain.Product;
 import com.javalang.bookstore.catalog.domain.ProductNotFoundException;
 import com.javalang.bookstore.catalog.domain.ProductService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/products")
@@ -27,7 +24,8 @@ class ProductController {
 
     @GetMapping("/{code}")
     ResponseEntity<Product> GetProductByCode(@PathVariable(value = "code") String code) {
-        return prodcutService.getProductByCode(code)
+        return prodcutService
+                .getProductByCode(code)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> ProductNotFoundException.forCode(code));
     }

@@ -1,9 +1,8 @@
 package com.javalang.bokstore.order.domain;
 
-import com.javalang.bokstore.order.domain.models.OrderRequest;
-import com.javalang.bokstore.order.domain.models.OrderResponse;
-import com.javalang.bokstore.order.domain.models.OrderStatus;
+import com.javalang.bokstore.order.domain.models.*;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,14 +24,14 @@ public class OrderService {
         this.orderEventService = orderEventService;
     }
 
-    public OrderResponse createOrder(String userName, OrderRequest orderRequest) {
-        orderValidator.validateOrder(orderRequest);
-        OrderEntity orderEntity = OrderMapper.convertToEntity(orderRequest);
+    public CreateOrderResponse createOrder(String userName, CreateOrderRequest createOrderRequest) {
+        orderValidator.validateOrder(createOrderRequest);
+        OrderEntity orderEntity = OrderMapper.convertToEntity(createOrderRequest);
         orderEntity.setUserName(userName);
         OrderEntity savedOrder = orderRepository.save(orderEntity);
         LOGGER.info("Created order with orderId: {}", savedOrder.getOrderNumber());
         orderEventService.save(OrderEventMapper.buildOrderCreatedEvent(savedOrder));
-        return new OrderResponse(savedOrder.getOrderNumber());
+        return new CreateOrderResponse(savedOrder.getOrderNumber());
     }
 
     public void processNewOrders() {
@@ -57,5 +56,15 @@ public class OrderService {
 
     private boolean canBeDelivered(OrderEntity order) {
         return ALLOWED_COUNTRIES.contains(order.getDeliveryAddress().country().toUpperCase());
+    }
+
+    public List<OrderSummary> findOrders(String userName) {
+        return orderRepository.findByUserName(userName);
+    }
+
+    public Optional<OrderInfo> findUserOrder(String userName, String orderNumber) {
+        return orderRepository
+                .findByUserNameAndOrderNumber(userName, orderNumber)
+                .map(OrderMapper::convertToOrderInfo);
     }
 }

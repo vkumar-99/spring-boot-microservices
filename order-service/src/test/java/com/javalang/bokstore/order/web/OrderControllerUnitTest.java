@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javalang.bokstore.order.domain.OrderService;
 import com.javalang.bokstore.order.domain.SecurityService;
-import com.javalang.bokstore.order.domain.models.OrderRequest;
+import com.javalang.bokstore.order.domain.models.CreateOrderRequest;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,12 +46,13 @@ class OrderControllerUnitTest {
 
     @ParameterizedTest(name = "[{index}]-{0}")
     @MethodSource("createOrderRequestProvider")
-    void shouldReturnBadRequestWhenOrderPayloadisInvalid(OrderRequest orderRequest) throws Exception {
-        given(orderService.createOrder(eq("User"), any(OrderRequest.class))).willReturn(null);
+    void shouldReturnBadRequestWhenOrderPayloadisInvalid(CreateOrderRequest createOrderRequest) throws Exception {
+        given(orderService.createOrder(eq("User"), any(CreateOrderRequest.class)))
+                .willReturn(null);
 
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orderRequest)))
+                        .content(objectMapper.writeValueAsString(createOrderRequest)))
                 .andExpect(status().isBadRequest());
     }
 

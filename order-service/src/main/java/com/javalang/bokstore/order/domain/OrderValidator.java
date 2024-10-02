@@ -2,8 +2,8 @@ package com.javalang.bokstore.order.domain;
 
 import com.javalang.bokstore.order.client.CatalogServiceClient;
 import com.javalang.bokstore.order.client.model.Product;
+import com.javalang.bokstore.order.domain.models.CreateOrderRequest;
 import com.javalang.bokstore.order.domain.models.OrderItem;
-import com.javalang.bokstore.order.domain.models.OrderRequest;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,8 @@ public class OrderValidator {
         this.restClient = restClient;
     }
 
-    public void validateOrder(OrderRequest orderRequest) {
-        Set<OrderItem> items = orderRequest.items();
+    public void validateOrder(CreateOrderRequest createOrderRequest) {
+        Set<OrderItem> items = createOrderRequest.items();
         for (OrderItem item : items) {
             Product product = restClient
                     .getProductByCode(item.code())

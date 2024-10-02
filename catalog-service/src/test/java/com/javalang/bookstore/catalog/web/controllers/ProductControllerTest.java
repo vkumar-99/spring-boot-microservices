@@ -1,20 +1,17 @@
 package com.javalang.bookstore.catalog.web.controllers;
 
-import com.javalang.bookstore.catalog.BaseIntegrationTest;
-import com.javalang.bookstore.catalog.domain.Product;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.parsing.Problem;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
-import org.springframework.test.context.jdbc.Sql;
-
-import java.math.BigDecimal;
-
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+
+import com.javalang.bookstore.catalog.BaseIntegrationTest;
+import com.javalang.bookstore.catalog.domain.Product;
+import io.restassured.http.ContentType;
+import java.math.BigDecimal;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.jdbc.Sql;
 
 @Sql("/test-data.sql")
 class ProductControllerTest extends BaseIntegrationTest {
@@ -49,7 +46,9 @@ class ProductControllerTest extends BaseIntegrationTest {
                 .as(Product.class);
         assertThat(product.code()).isEqualTo("P112");
         assertThat(product.name()).isEqualTo("The Book Thief");
-        assertThat(product.description()).isEqualTo("Nazi Germany. The country is holding its breath. Death has never been busier, and will be busier still.By her brother's graveside, Liesel's life is changed when she picks up a single object, partially hidden in the snow.");
+        assertThat(product.description())
+                .isEqualTo(
+                        "Nazi Germany. The country is holding its breath. Death has never been busier, and will be busier still.By her brother's graveside, Liesel's life is changed when she picks up a single object, partially hidden in the snow.");
         assertThat(product.price()).isEqualTo(new BigDecimal("30.0"));
     }
 
@@ -61,6 +60,6 @@ class ProductControllerTest extends BaseIntegrationTest {
                 .then()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .body("type", is("https://api.bookstore.com/errors/not-found"))
-                .body("title",is("Product Not Found"));
+                .body("title", is("Product Not Found"));
     }
 }
