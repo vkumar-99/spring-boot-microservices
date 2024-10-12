@@ -15,12 +15,13 @@ services:
       resources:
         limits:
           memory: 700m
+
   order-service:
     image: javalang/bookstore-order-service
     container_name: order-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - ORDER_CATALOG_SERVICE_URL=http://catalog-service:8081
+      - ORDER_CATALOG_SERVICE_URL=http://api-gateway:8989/catalog
       - DB_URL=jdbc:postgresql://order-db:5432/postgres
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
@@ -38,10 +39,9 @@ services:
 
   notification-service:
     image: javalang/bookstore-notification-service
-    container_name: order-service
+    container_name: notification-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - ORDER_CATALOG_SERVICE_URL=http://catalog-service:8081
       - DB_URL=jdbc:postgresql://notifications-db:5432/postgres
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
@@ -53,6 +53,21 @@ services:
       - MAIL_PORT=1025
     ports:
       - "8083:8083"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  api-gateway:
+    image: javalang/bookstore-api-gateway
+    container_name: api-gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CATALOG_SERVICE_URL=http://catalog-service:8081
+      - ORDER_SERVICE_URL=http://order-service:8082
+    ports:
+      - "8989:8989"
     restart: unless-stopped
     deploy:
       resources:
